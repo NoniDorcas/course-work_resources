@@ -1,0 +1,5 @@
+1. man malloc - has all the commands
+2. malloc is used for dynamic memory allocation
+3. to release this memory, the function free is used
+4. structures are used when working with multiple datatypes
+
