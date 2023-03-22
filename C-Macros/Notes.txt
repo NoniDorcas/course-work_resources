@@ -1,0 +1,77 @@
+Functions of preprocessor;
+  -include libraries eg #include <stdio.h>
+  -define constants eg #define PI 3.142 
+  - create macros expanded at compile time e.g #define TABLESIZE 1024
+Above are preprocessor directives
+syntax to define constants;
+ #define [identifier_name] [value]
+conditional compilation
+ -uses the directives #if, #elif, #else, #ifdef, #ifndef and are closed with #endif
+ cam be used to;
+ 1. comment out code
+  #if 0
+  /**
+  *
+  */
+  #endif
+ 2. include guards to prevent double inclusion
+ #ifndef _FILE_NAME_H_
+ #define _FILE_NAME_H
+
+ /* code */
+
+ #endif
+
+ - #ifndef NULL
+#define NULL (void *)0
+#endif // #ifndef NULL
+
+3. Macros
+syntax:
+#define MACRO_NAME(arg1, arg2, ...) [code to expand to]
+eg
+#define INCREMENT(x) x++ //increment macro
+#define MULT(x, y) x * y // wrong as it allows arghuments to be eva;uated first
+int z = MULT(3 + 2, 4 + 2); // 2 * 4 will be evaluated first!
+instead
+#define MULT(x, y) (x) * (y)
+MULT(3 + 2, 4 + 2) will expand to (3 + 2) * (4 + 2)
+Thus sorround arguments with parenthesis
+This is also common when defining constants
+eg 
+  #define ADD_FIVE(a) (a) + 5
+ 
+int x = ADD_FIVE(3) * 3;
+// this expands to (3) + 5 * 3, so 5 * 3 is evaluated first
+// Now x is 18, not 24!
+jnstead;
+#define ADD_FIVE(a) ((a) + 5)
+
+int x = ADD_FIVE(3) * 3;
+- 
+#define SWAP(a, b)  { a ^= b; b ^= a; a ^= b; } - this macro can also be written as #define SWAP(a, b)  {                   \
+                        a ^= b;         \
+                        b ^= a;         \ 
+                        a ^= b;         \
+                    }
+'/' imdicates line continuation and increase readability
+- pasting tokens
+arguments passed by macros are called tokens
+to paste tokens in a macro, use ## between the things to paste together
+eg 
+ #define BUILD_FIELD(name) my_struct.inner_struct.union_a.field_##name
+ will expand into
+ my_struct.inner_struct.union_a.field_field1
+ syntax for string-izing a token
+macro names are written in uppercasemacro effect take place at the time of definition
+foo = X;
+     #define X 4
+     bar = X;
+produces
+ foo = X;
+
+to change definition of a macro;
+ #define BUFSIZE 1020
+     #define TABLESIZE BUFSIZE
+     #undef BUFSIZE
+     #define BUFSIZE 37 // TABLESIZE expands to 37
